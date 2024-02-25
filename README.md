@@ -1,4 +1,4 @@
-## DB Trips iCal Saver
+## Deutsche Bahn (bahn.de) Trips to .ics (iCal)
 GreasyFork: https://greasyfork.org/en/scripts/488267-db-trips-ical-saver
 
 This is an extension for the Deutsche Bahn website, which allows you to download routes in .ics (iCal) format to add to your calendar
