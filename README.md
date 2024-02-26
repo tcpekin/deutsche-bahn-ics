@@ -1,12 +1,16 @@
 ## Deutsche Bahn (bahn.de) Trips to .ics (iCal)
-GreasyFork: [https://greasyfork.org/en/scripts/488267-db-trips-ical-saver](https://greasyfork.org/en/scripts/488371-deutsche-bahn-bahn-de-trips-ical-saver)
+GreasyFork: https://greasyfork.org/en/scripts/488371-deutsche-bahn-bahn-de-trips-ical-saver
 
 This is an extension for the Deutsche Bahn website (bahn.de), which allows you to download routes in .ics (iCal) format to add to your calendar. This fork specifically works on the German bahn.de site as opposed to the English international version.
 
 * Each transfer on the route is a separate event, so it is easy to track your transfers
 * Train name, departure/arrival points are listed in the event name
-* Description of the event contains additional information degarding the platform etc.
+* Description of the event contains additional information regarding the platform etc.
 
- ![Screenshot 2024-02-25 at 16 49 37](https://github.com/sfedia/db-trips-ical-saver/assets/16120239/6d79a6f4-bfac-4854-8000-e346b9e51b32)
-  ![Screenshot 2024-02-25 at 16 50 07](https://github.com/sfedia/db-trips-ical-saver/assets/16120239/dbee0fda-f1bd-453e-bcf8-7b103fd69367)
+1. Find the "Add to Calendar button in the dropdown" and click it. <img width="1139" alt="Screenshot 2024-02-26 at 22 01 06" src="https://github.com/tcpekin/deutsche-bahn-ics/assets/9438848/1ffd7b44-9fe4-4e22-a628-8f627b533d66">
 
+1. Download the .ics file
+
+1. Add to a calendar of your choice!
+
+<img width="1239" alt="Screenshot 2024-02-26 at 22 04 50" src="https://github.com/tcpekin/deutsche-bahn-ics/assets/9438848/a6d747f9-90bd-4ef3-8e4a-9f1e96d566a3">
