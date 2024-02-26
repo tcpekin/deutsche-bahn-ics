@@ -166,7 +166,7 @@
             addCalendarOption.addEventListener("click", function (e) { saveTripToICS(e.target) });
             element.appendChild(addCalendarOption);
 
-            parent(element, 3).setAttribute("style", "--item-count: 3;");
+            parent(element, 2).setAttribute("style", "--item-count: 3;");
 
             var style = document.createElement("style");
             style.innerHTML = '.add_to_calendar:hover { background: #f0f3f5; }';
