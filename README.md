@@ -1,7 +1,8 @@
 ## Deutsche Bahn (bahn.de) Trips to .ics (iCal)
-GreasyFork: https://greasyfork.org/en/scripts/488267-db-trips-ical-saver
+GreasyFork: [https://greasyfork.org/en/scripts/488267-db-trips-ical-saver](https://greasyfork.org/en/scripts/488371-deutsche-bahn-bahn-de-trips-ical-saver)
 
-This is an extension for the Deutsche Bahn website, which allows you to download routes in .ics (iCal) format to add to your calendar
+This is an extension for the Deutsche Bahn website (bahn.de), which allows you to download routes in .ics (iCal) format to add to your calendar. This fork specifically works on the German bahn.de site as opposed to the English international version.
+
 * Each transfer on the route is a separate event, so it is easy to track your transfers
 * Train name, departure/arrival points are listed in the event name
 * Description of the event contains additional information degarding the platform etc.
