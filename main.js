@@ -1,15 +1,15 @@
 // ==UserScript==
 // @name         DB Trips iCal Saver
-// @namespace    http://tampermonkey.net/
-// @version      2024-02-25
+// @namespace    https://github.com/tcpekin/deutsche-bahn-ics
+// @version      2024-02-26
 // @description  Adds "Add to Calendar" option for DB trips
 // @author       You
-// @match        https://int.bahn.de/en/buchung/fahrplan/*
+// @match        https://www.bahn.de/buchung/fahrplan/*
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=bahn.de
 // @grant        none
 // ==/UserScript==
 
-(function() {
+(function () {
     'use strict';
     /**
 
@@ -18,7 +18,7 @@
     Credits: matthiasanderer (https://github.com/matthiasanderer/icsFormatter)
 
     **/
-    window.icsFormatter = function() {
+    window.icsFormatter = function () {
         'use strict';
 
         if (navigator.userAgent.indexOf('MSIE') > -1 && navigator.userAgent.indexOf('MSIE 10') == -1) {
@@ -35,20 +35,20 @@
         var calendarEnd = SEPARATOR + 'END:VCALENDAR';
 
         return {
-            'events': function() {
+            'events': function () {
                 return calendarEvents;
             },
 
-            'calendar': function() {
+            'calendar': function () {
                 return calendarStart + SEPARATOR + calendarEvents.join(SEPARATOR) + calendarEnd;
             },
-            'addEvent': function(subject, description, location, begin, stop) {
+            'addEvent': function (subject, description, location, begin, stop) {
                 if (typeof subject === 'undefined' ||
                     typeof description === 'undefined' ||
                     typeof location === 'undefined' ||
                     typeof begin === 'undefined' ||
                     typeof stop === 'undefined'
-                   ) {
+                ) {
                     return false;
                 }
                 var start_date = new Date(begin);
@@ -94,7 +94,7 @@
                 return calendarEvent;
             },
 
-            'download': function(filename, ext) {
+            'download': function (filename, ext) {
                 if (calendarEvents.length < 1) {
                     return false;
                 }
@@ -108,15 +108,49 @@
         };
     };
 
-    function parent (el, n) {
+    function parent(el, n) {
         while (n > 0) {
             el = el.parentNode;
-            n --;
+            n--;
         }
         return el;
+    };
+
+    function formatDate(inputDate) {
+        // Split the input date string by space
+        const parts = inputDate.split(' ');
+
+        // Map month names to their numeric representation (English)
+        const monthMap = {
+            'Januar': '01',
+            'Februar': '02',
+            'März': '03',
+            'April': '04',
+            'Mai': '05',
+            'Juni': '06',
+            'Juli': '07',
+            'August': '08',
+            'September': '09',
+            'Oktober': '10',
+            'November': '11',
+            'Dezember': '12'
+        };
+
+        // Extract day, month, and year
+        const day = parts[1].slice(0, -1); // Remove the trailing dot
+        const month = monthMap[parts[2]]; // Convert month to numeric format
+        const year = parts[3];
+
+        // Pad day with leading zero if needed
+        const paddedDay = day.length === 1 ? '0' + day : day;
+
+        // Return formatted date string
+        return `${month}.${paddedDay}.${year}`;
     }
 
-    function main () {
+
+
+    function main() {
         var actionMenuUl = document.querySelectorAll(".ActionMenu div div ul");
         actionMenuUl.forEach((element, i) => {
             if (element.querySelectorAll("li").length > 2) return;
@@ -142,7 +176,7 @@
 
     setInterval(main, 1000);
 
-    function waitFor (selectorFunc, applyFunc) {
+    function waitFor(selectorFunc, applyFunc) {
         var itl = setInterval(function () {
             if (selectorFunc()) {
                 clearInterval(itl);
@@ -152,7 +186,7 @@
     }
 
 
-    function saveTripToICS (targetElement) {
+    function saveTripToICS(targetElement) {
         var trip = parent(targetElement, 7);
         trip.querySelector(".reiseplan__details").style.display = "none";
         trip.querySelector(".reiseplan__details button").click();
@@ -170,7 +204,7 @@
                 window.calEntry = window.icsFormatter();
 
                 parsedTripParts.forEach((part, i) => {
-                    var stringDate = document.querySelector(".default-reiseloesung-list-page-controls__title-date").innerText;
+                    var stringDate = formatDate(document.querySelector(".default-reiseloesung-list-page-controls__title-date").innerText);
                     var begin = new Date(stringDate + ", " + part.startTime);
                     var end = new Date(stringDate + ", " + part.endTime);
                     var title = part.eventName;
