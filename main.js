@@ -1,13 +1,15 @@
 // ==UserScript==
 // @name         DB Trips iCal Saver
 // @namespace    https://github.com/tcpekin/deutsche-bahn-ics
-// @version      2024-02-26
+// @version      2024-02-27
+// @license      MIT
 // @description  Adds "Add to Calendar" option for DB trips
 // @author       You
 // @match        https://www.bahn.de/buchung/fahrplan/*
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=bahn.de
 // @grant        none
-// @license      MIT
+// @downloadURL  https://update.greasyfork.org/scripts/488371/DB%20Trips%20iCal%20Saver.user.js
+// @updateURL    https://update.greasyfork.org/scripts/488371/DB%20Trips%20iCal%20Saver.meta.js
 // ==/UserScript==
 
 (function () {
@@ -201,13 +203,27 @@
                 var tripParts = trip.querySelectorAll(".verbindungs-abschnitt");
                 var parsedTripParts = parseTripParts(tripParts);
 
-
                 window.calEntry = window.icsFormatter();
-
+                var nextDayFlag = 0;
                 parsedTripParts.forEach((part, i) => {
                     var stringDate = formatDate(document.querySelector(".default-reiseloesung-list-page-controls__title-date").innerText);
                     var begin = new Date(stringDate + ", " + part.startTime);
                     var end = new Date(stringDate + ", " + part.endTime);
+
+
+                    // Apply next day flag if set
+                    if (nextDayFlag === 1) {
+                        begin.setDate(begin.getDate() + 1); // Move begin date to the next day
+                        end.setDate(end.getDate() + 1); // Move end date to the next day
+                    }
+                    // Adjust dates if the end time is before the start time
+                    if (end < begin) {
+                        nextDayFlag = 1; // Move end date to the next day
+                        end.setDate(end.getDate() + 1); // Add a day to end date
+                    }
+
+
+
                     var title = part.eventName;
                     window.calEntry.addEvent(title, part.eventDescription, "", begin.toUTCString(), end.toUTCString());
                 });
@@ -217,8 +233,8 @@
                 trip.querySelector(".reiseplan__details").style.display = "";
                 trip.querySelector(".reise-details__infos").style.display = "";
                 trip.querySelector(".reise-details__actions").style.display = "";
-
             }
+
         );
     }
 
