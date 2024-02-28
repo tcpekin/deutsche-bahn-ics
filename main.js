@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         DB Trips iCal Saver
 // @namespace    https://github.com/tcpekin/deutsche-bahn-ics
-// @version      2024-02-27
+// @version      2024-02-28
 // @license      MIT
 // @description  Adds "Add to Calendar" option for DB trips
 // @author       You
@@ -205,24 +205,29 @@
 
                 window.calEntry = window.icsFormatter();
                 var nextDayFlag = 0;
+                var lastEnd = new Date(1991, 3, 9);
                 parsedTripParts.forEach((part, i) => {
                     var stringDate = formatDate(document.querySelector(".default-reiseloesung-list-page-controls__title-date").innerText);
                     var begin = new Date(stringDate + ", " + part.startTime);
                     var end = new Date(stringDate + ", " + part.endTime);
 
+                    // Move forward a day if the beginning is before the last end. This occurs when you have a pause between trains that crosses days.
+                    if (begin < lastEnd) {
+                        nextDayFlag = 1; // Move the whole trip to the next day
+                    }
 
                     // Apply next day flag if set
                     if (nextDayFlag === 1) {
                         begin.setDate(begin.getDate() + 1); // Move begin date to the next day
                         end.setDate(end.getDate() + 1); // Move end date to the next day
                     }
-                    // Adjust dates if the end time is before the start time
+                    // Adjust dates if the end time is before the start time - this is when a train crosses midnight
                     if (end < begin) {
                         nextDayFlag = 1; // Move end date to the next day
                         end.setDate(end.getDate() + 1); // Add a day to end date
                     }
 
-
+                    lastEnd = end;
 
                     var title = part.eventName;
                     window.calEntry.addEvent(title, part.eventDescription, "", begin.toUTCString(), end.toUTCString());
