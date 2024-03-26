@@ -1,15 +1,15 @@
 // ==UserScript==
 // @name         DB Trips iCal Saver
 // @namespace    https://github.com/tcpekin/deutsche-bahn-ics
-// @version      2024-02-28
+// @version      2024-03-26
 // @license      MIT
 // @description  Adds "Add to Calendar" option for DB trips
 // @author       You
 // @match        https://www.bahn.de/buchung/fahrplan/*
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=bahn.de
 // @grant        none
-// @downloadURL  https://update.greasyfork.org/scripts/488371/DB%20Trips%20iCal%20Saver.user.js
-// @updateURL    https://update.greasyfork.org/scripts/488371/DB%20Trips%20iCal%20Saver.meta.js
+// @downloadURL https://update.greasyfork.org/scripts/488371/DB%20Trips%20iCal%20Saver.user.js
+// @updateURL https://update.greasyfork.org/scripts/488371/DB%20Trips%20iCal%20Saver.meta.js
 // ==/UserScript==
 
 (function () {
@@ -125,25 +125,25 @@
 
         // Map month names to their numeric representation (English)
         const monthMap = {
-            'Januar': '01',
-            'Februar': '02',
+            'Jan.': '01',
+            'Feb.': '02',
             'März': '03',
-            'April': '04',
+            'Apr.': '04',
             'Mai': '05',
             'Juni': '06',
             'Juli': '07',
-            'August': '08',
-            'September': '09',
-            'Oktober': '10',
-            'November': '11',
-            'Dezember': '12'
+            'Aug.': '08',
+            'Sep.': '09',
+            'Okt.': '10',
+            'Nov.': '11',
+            'Dez.': '12'
         };
 
         // Extract day, month, and year
         const day = parts[1].slice(0, -1); // Remove the trailing dot
         const month = monthMap[parts[2]]; // Convert month to numeric format
         const year = parts[3];
-
+        // console.log({day, month, year})
         // Pad day with leading zero if needed
         const paddedDay = day.length === 1 ? '0' + day : day;
 
@@ -210,7 +210,6 @@
                     var stringDate = formatDate(document.querySelector(".default-reiseloesung-list-page-controls__title-date").innerText);
                     var begin = new Date(stringDate + ", " + part.startTime);
                     var end = new Date(stringDate + ", " + part.endTime);
-
                     // Move forward a day if the beginning is before the last end. This occurs when you have a pause between trains that crosses days.
                     if (begin < lastEnd) {
                         nextDayFlag = 1; // Move the whole trip to the next day
@@ -228,7 +227,7 @@
                     }
 
                     lastEnd = end;
-
+                    //console.log({begin, end})
                     var title = part.eventName;
                     window.calEntry.addEvent(title, part.eventDescription, "", begin.toUTCString(), end.toUTCString());
                 });
